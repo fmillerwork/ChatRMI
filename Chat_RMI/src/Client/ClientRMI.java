@@ -18,15 +18,17 @@ public class ClientRMI {
 	public static void main(String args[]) throws Exception {
         ClientRMI chatClient = new ClientRMI();     
         Scanner sc = new Scanner(System.in);
-        new ReadindThread(chatClient).start();
-        
+        PollingThread pt = new PollingThread(chatClient);
+        pt.start();
+        System.out.println("Connecté au serveur...");
         String message = sc.nextLine();
         while(!message.equals("$")){
         	chatClient.Serveur.sendMessage(message);
+        	pt.addMessage(message);
         	message = sc.nextLine();
         }
+        sc.close();
         System.out.println("A quitté le chat...");
-        
         
         
         

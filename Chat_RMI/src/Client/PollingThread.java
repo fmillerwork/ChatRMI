@@ -3,13 +3,13 @@ package Client;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class ReadindThread extends Thread{
+public class PollingThread extends Thread{
 
-	ClientRMI chatClient;
-	ArrayList<String> displayedMessages;
+	private ClientRMI chatClient;
+	private ArrayList<String> displayedMessages;
 	
 	
-	public ReadindThread(ClientRMI chatClient){
+	public PollingThread(ClientRMI chatClient){
 		this.chatClient = chatClient;
 		displayedMessages = new ArrayList<String>();
 	}
@@ -31,9 +31,16 @@ public class ReadindThread extends Thread{
 			        }
 				}
 			} catch (RemoteException e) {
-				System.out.println("Erreur de connexion...");
+				System.out.println("Erreur de connexion au serveur...");
+				break;	// On décide de terminer le processus si une erreur serveur survient
 			}
 		}
 	}
+
+	public void addMessage(String message) {
+		displayedMessages.add(message);
+	}
+	
+	
 }
 
