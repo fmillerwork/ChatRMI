@@ -15,6 +15,7 @@ public class ClientRMICallback implements ClientIntfCallback, Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	ServeurIntfCallback Serveur;
+	private 
 	ArrayList<String> displayedMessages = new ArrayList<String>();
 	
 	public ClientRMICallback() throws MalformedURLException, RemoteException, NotBoundException {
@@ -23,14 +24,17 @@ public class ClientRMICallback implements ClientIntfCallback, Serializable{
 	
 	public static void main(String args[]) throws Exception {
         ClientRMICallback chatClient = new ClientRMICallback();  
+        Naming.rebind("//localhost/RmiClient", chatClient);
         
         Scanner sc = new Scanner(System.in);
-        //new PollThread(chatClient).start();
         System.out.println("Connecté au serveur...");
-        chatClient.Serveur.connect((ClientIntfCallback) chatClient);
+        
+        //ClientIntfCallback client = (ClientIntfCallback) chatClient;
+        //client = (ClientIntfCallback)Naming.lookup("//localhost/RmiClient");
+        chatClient.Serveur.connect(chatClient);
         
         String message = sc.nextLine();
-        while(!message.equals("$")){
+        while(!message.equals("/leave")){
         	try {
         		chatClient.Serveur.sendMessage(message);
         		chatClient.displayedMessages.add(message);
@@ -40,7 +44,7 @@ public class ClientRMICallback implements ClientIntfCallback, Serializable{
         	message = sc.nextLine();
         }
         sc.close();
-        System.out.println("A quitté le chat...");
+        System.out.println("A quitté le chat.");
         
         
     }

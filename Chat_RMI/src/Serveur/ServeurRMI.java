@@ -11,7 +11,7 @@ import Interface.ServeurIntf;
 public class ServeurRMI extends UnicastRemoteObject implements ServeurIntf{
 	private static final long serialVersionUID = 1L;
 
-	private ArrayList<String> messageList = new ArrayList<String>(); 
+	private ArrayList<String> messageList = new ArrayList<String>();
 	
 	public ServeurRMI() throws RemoteException{
 		super();
@@ -33,8 +33,8 @@ public class ServeurRMI extends UnicastRemoteObject implements ServeurIntf{
 	}
 
 	@Override
-	public void sendMessage(String message) throws RemoteException {
-		messageList.add(message);
+	public void sendMessage(String message, String pseudo) throws RemoteException {
+		messageList.add(pseudo + " : " + message);
 	}
 
 	

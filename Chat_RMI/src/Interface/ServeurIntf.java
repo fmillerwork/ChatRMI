@@ -8,7 +8,7 @@ public interface ServeurIntf extends Remote{
 
 	public ArrayList<String> getMessageList() throws RemoteException;
 	
-	public void sendMessage(String message) throws RemoteException;
+	public void sendMessage(String message, String pseudo) throws RemoteException;
 	
 	
 }

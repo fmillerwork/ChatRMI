@@ -18,7 +18,7 @@ public class PollingThread extends Thread{
 		while(true) {
 			try {
 				ArrayList<String> serverMessages = chatClient.Serveur.getMessageList(); // Récupération de la liste des messages serveur.
-				
+																						// RECUP JUSTE MESSAGES NON LUS
 				if(displayedMessages.size() == 0) {	//Aucun message stocké chez le client.
 					for(int i = 0; i < serverMessages.size();i++) {
 						displayedMessages.add(serverMessages.get(i));
