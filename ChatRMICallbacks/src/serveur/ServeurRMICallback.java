@@ -40,19 +40,7 @@ public class ServeurRMICallback extends UnicastRemoteObject implements ServeurIn
 	public void sendMessage(ClientIntfCallback sender, String message, String pseudo) throws RemoteException {
 		String newMessage = pseudo + " : " + message;
 		messageList.add(newMessage);
-		
-		// Envoi des messages aux clients
-		for(int i = 0; i < listeClients.size(); i++) {
-			try {
-				if(!sender.equals(listeClients.get(i))) {
-					listeClients.get(i).getLastMessage(newMessage);
-				}
-			} catch (RemoteException e) {
-				System.out.println("Client deconnecté !");
-				listeClients.remove(i);
-			}
-		}
-		
+		sendToAll(sender, newMessage);
 	}
 	
 	/**
@@ -60,20 +48,30 @@ public class ServeurRMICallback extends UnicastRemoteObject implements ServeurIn
 	 * @throws NotBoundException 
 	 * @throws MalformedURLException 
 	 */
-	public void connect(ClientIntfCallback client) throws RemoteException{
+	public void connect(ClientIntfCallback client, String pseudo) throws RemoteException{
 		listeClients.add(client);
+		sendToAll(client, pseudo + " s'est co !");
 	}
 
 	/**
 	 * Utilisé par le le client lors de sa deconnexion.
 	 */
 	public void disconnect(ClientIntfCallback client, String pseudo) throws RemoteException {
-		// Envoi des messages aux clients
+		
 		listeClients.remove(client);
+		sendToAll(client, pseudo + " s'est déco !");
+	}
+	
+	/**
+	 * Envoi un messages aux clients sauf à celui en paramètre
+	 * @param message
+	 */
+	private void sendToAll(ClientIntfCallback client, String message) {
+		
 		for(int i = 0; i < listeClients.size(); i++) {
 			try {
 				if(!client.equals(listeClients.get(i))) {
-					listeClients.get(i).getLastMessage(pseudo + " s'est déco !");
+					listeClients.get(i).getLastMessage(message);
 				}
 			} catch (RemoteException e) {
 				System.out.println("Client deconnecté !");
@@ -81,6 +79,5 @@ public class ServeurRMICallback extends UnicastRemoteObject implements ServeurIn
 			}
 		}
 	}
-		
 	
 }

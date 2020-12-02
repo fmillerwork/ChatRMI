@@ -9,7 +9,7 @@ public interface ServeurIntfCallback extends Remote{
 	
 	public void sendMessage(ClientIntfCallback sender, String message, String pseudo) throws RemoteException;
 	
-	public void connect(ClientIntfCallback client) throws RemoteException;
+	public void connect(ClientIntfCallback client, String pseudo) throws RemoteException;
 	
 	public void disconnect(ClientIntfCallback client, String pseudo) throws RemoteException;
 	

@@ -35,7 +35,7 @@ public class ClientRMICallback extends UnicastRemoteObject implements ClientIntf
 	        System.out.println("Commandes du chat :\n\t/leave => Quitter le chat");
 	        
 	        System.out.println("Connecté au serveur...");
-	        chatClient.Serveur.connect((ClientIntfCallback) chatClient);
+	        chatClient.Serveur.connect((ClientIntfCallback) chatClient, chatClient.pseudo);
 	        
 	        String message = chatClient.sc.nextLine();
 	        while(!message.equals("/leave")){
