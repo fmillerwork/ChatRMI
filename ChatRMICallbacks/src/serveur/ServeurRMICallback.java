@@ -51,6 +51,17 @@ public class ServeurRMICallback extends UnicastRemoteObject implements ServeurIn
 	public void connect(ClientIntfCallback client, String pseudo) throws RemoteException{
 		listeClients.add(client);
 		sendToAll(client, pseudo + " s'est co !");
+		
+		//Envoi des messages archivés au nouvel arrivant
+		for(int i = 0; i < messageList.size(); i++) {
+			try {
+				client.getLastMessage(messageList.get(i));
+				
+			} catch (RemoteException e) {
+				System.out.println("Client deconnecté !");
+				listeClients.remove(i);
+			}
+		}
 	}
 
 	/**
