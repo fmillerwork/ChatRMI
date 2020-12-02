@@ -5,17 +5,17 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import intf.ClientIntfCallback;
 import intf.ServeurIntfCallback;
 
-public class ClientRMICallback implements ClientIntfCallback, Serializable{
+public class ClientRMICallback extends UnicastRemoteObject implements ClientIntfCallback, Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	ServeurIntfCallback Serveur;
-	private 
 	ArrayList<String> displayedMessages = new ArrayList<String>();
 	
 	public ClientRMICallback() throws MalformedURLException, RemoteException, NotBoundException {
@@ -23,28 +23,26 @@ public class ClientRMICallback implements ClientIntfCallback, Serializable{
 	}
 	
 	public static void main(String args[]) throws Exception {
-        ClientRMICallback chatClient = new ClientRMICallback();  
-        Naming.rebind("//localhost/RmiClient", chatClient);
+        ClientRMICallback chatClient = new ClientRMICallback(); 
         
         Scanner sc = new Scanner(System.in);
+        //new PollThread(chatClient).start();
         System.out.println("Connecté au serveur...");
-        
-        //ClientIntfCallback client = (ClientIntfCallback) chatClient;
-        //client = (ClientIntfCallback)Naming.lookup("//localhost/RmiClient");
-        chatClient.Serveur.connect(chatClient);
+        chatClient.Serveur.connect((ClientIntfCallback) chatClient);
         
         String message = sc.nextLine();
         while(!message.equals("/leave")){
         	try {
-        		chatClient.Serveur.sendMessage(message);
         		chatClient.displayedMessages.add(message);
+        		chatClient.Serveur.sendMessage(message);
+        		
         	}catch (RemoteException e) {
 				System.out.println("Connexion au serveur interrompue");
 			}
         	message = sc.nextLine();
         }
         sc.close();
-        System.out.println("A quitté le chat.");
+        System.out.println("A quitté le chat...");
         
         
     }

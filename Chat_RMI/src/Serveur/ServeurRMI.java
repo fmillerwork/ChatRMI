@@ -28,8 +28,11 @@ public class ServeurRMI extends UnicastRemoteObject implements ServeurIntf{
 	 }
 
 	@Override
-	public ArrayList<String> getMessageList() throws RemoteException {
-		return messageList;
+	public String getLastMessage(int lastMessageIndex) throws RemoteException {
+		if(messageList.size() > lastMessageIndex + 1) {
+			return messageList.get(lastMessageIndex + 1);
+		}
+		return null;
 	}
 
 	@Override

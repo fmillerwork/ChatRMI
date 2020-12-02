@@ -35,12 +35,12 @@ public class ClientRMI {
             String message = chatClient.sc.nextLine();
             while(!message.equals("/leave")){
             	try{
+            		pt.newMessage();
             		chatClient.Serveur.sendMessage(message, pseudo);
             	}catch (RemoteException e) {
     				System.out.println("Connexion perdue...");
     				break;
     			}
-            	pt.addMessage(message);
             	message = chatClient.sc.nextLine();
             }
             

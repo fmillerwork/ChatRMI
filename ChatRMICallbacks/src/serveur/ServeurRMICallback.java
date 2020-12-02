@@ -1,6 +1,8 @@
 package serveur;
 
+import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
@@ -59,8 +61,11 @@ public class ServeurRMICallback extends UnicastRemoteObject implements ServeurIn
 	
 	/**
 	 * Utilisé par un client lors de sa connexion.
+	 * @throws NotBoundException 
+	 * @throws MalformedURLException 
 	 */
-	public void connect(ClientIntfCallback client) throws RemoteException {
+	public void connect(ClientIntfCallback client) throws RemoteException, MalformedURLException, NotBoundException {
+		//client = (ClientIntfCallback)Naming.lookup("//localhost/RmiServer");
 		listeClients.add(client);
 		System.out.println("Nouveau chatteur connecté ! Nombre de chatteurs connectés : " + listeClients.size());
 	}

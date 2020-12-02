@@ -6,29 +6,22 @@ import java.util.ArrayList;
 public class PollingThread extends Thread{
 
 	private ClientRMI chatClient;
-	private ArrayList<String> displayedMessages;
+	private int lastMessageIndex = -1;
 	
 	
 	public PollingThread(ClientRMI chatClient){
 		this.chatClient = chatClient;
-		displayedMessages = new ArrayList<String>();
 	}
 		
 	public void run(){
 		while(true) {
 			try {
-				ArrayList<String> serverMessages = chatClient.Serveur.getMessageList(); // Récupération de la liste des messages serveur.
-																						// RECUP JUSTE MESSAGES NON LUS
-				if(displayedMessages.size() == 0) {	//Aucun message stocké chez le client.
-					for(int i = 0; i < serverMessages.size();i++) {
-						displayedMessages.add(serverMessages.get(i));
-						System.out.println(serverMessages.get(i));
-			        }
-				}else {
-					for(int i = 0; i < serverMessages.size() - displayedMessages.size() ;i++) {
-						displayedMessages.add(serverMessages.get(i + displayedMessages.size()-1));
-						System.out.println(serverMessages.get(i + displayedMessages.size()-1));
-			        }
+				String serverMessage;
+				serverMessage = chatClient.Serveur.getLastMessage(lastMessageIndex); // Récupération de la liste des messages serveur non lus.
+				
+				if(serverMessage != null) {
+					lastMessageIndex ++;
+					System.out.println(serverMessage);
 				}
 			} catch (RemoteException e) {
 				System.out.println("Erreur de connexion au serveur...");
@@ -37,8 +30,8 @@ public class PollingThread extends Thread{
 		}
 	}
 
-	public void addMessage(String message) {
-		displayedMessages.add(message);
+	public void newMessage() {
+		lastMessageIndex ++;
 	}
 	
 	
