@@ -54,7 +54,7 @@ public class ServeurRMICallback extends UnicastRemoteObject implements ServeurIn
 	}
 
 	/**
-	 * Utilisé par le le client lors de sa deconnexion.
+	 * Utilisé par le client lors de sa deconnexion.
 	 */
 	public void disconnect(ClientIntfCallback client, String pseudo) throws RemoteException {
 		
@@ -63,7 +63,7 @@ public class ServeurRMICallback extends UnicastRemoteObject implements ServeurIn
 	}
 	
 	/**
-	 * Envoi un messages aux clients sauf à celui en paramètre
+	 * Envoi un messages aux clients sauf à celui en paramètre. 
 	 * @param message
 	 */
 	private void sendToAll(ClientIntfCallback client, String message) {
