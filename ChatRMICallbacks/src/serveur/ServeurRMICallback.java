@@ -40,14 +40,16 @@ public class ServeurRMICallback extends UnicastRemoteObject implements ServeurIn
 	/**
 	 * Utilisé par le client pour envoyer un message.
 	 */
-	public void sendMessage(String message) throws RemoteException {
+	public void sendMessage(ClientIntfCallback sender, String message, String pseudo) throws RemoteException {
 		messageList.add(message);
 		
 		//	Envoi des messages aux clients
 		ArrayList<Integer> clientIDToRemove = new ArrayList<Integer>();
 		for(int i = 0; i < listeClients.size(); i++) {
 			try {
-				listeClients.get(i).getMessagesList(messageList);
+				if(!sender.equals(listeClients.get(i))) {
+					listeClients.get(i).getLastMessage(message, pseudo);
+				}
 			} catch (RemoteException e) {
 	 			System.out.println("Client deconnecté !");
 	 			clientIDToRemove.add(i);
@@ -65,10 +67,9 @@ public class ServeurRMICallback extends UnicastRemoteObject implements ServeurIn
 	 * @throws MalformedURLException 
 	 */
 	public void connect(ClientIntfCallback client) throws RemoteException, MalformedURLException, NotBoundException {
-		//client = (ClientIntfCallback)Naming.lookup("//localhost/RmiServer");
 		listeClients.add(client);
-		System.out.println("Nouveau chatteur connecté ! Nombre de chatteurs connectés : " + listeClients.size());
 	}
+
 
 	
 	

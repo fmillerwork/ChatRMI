@@ -9,7 +9,7 @@ public interface ServeurIntfCallback extends Remote{
 
 	//public ArrayList<String> getMessageList() throws RemoteException;
 	
-	public void sendMessage(String message) throws RemoteException;
+	public void sendMessage(ClientIntfCallback sender, String message, String pseudo) throws RemoteException;
 	
 	public void connect(ClientIntfCallback client) throws RemoteException, MalformedURLException, NotBoundException;
 	
