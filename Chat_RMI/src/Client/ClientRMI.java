@@ -49,6 +49,9 @@ public class ClientRMI {
         }
     }
 	
+	/**
+	 * Tente une connexion au serveur et propose une reconnexion en cas d'échec.
+	 */
 	private void tryConnection() {
 		try{
 			Serveur = (ServeurIntf)Naming.lookup("//localhost/RmiServer");

@@ -17,17 +17,19 @@ public class ServeurRMI extends UnicastRemoteObject implements ServeurIntf{
 		super();
 	}
 	
-	 public static void main(String args[]) throws Exception {
-		 try { 
+	public static void main(String args[]) throws Exception {
+		try { 
 			 LocateRegistry.createRegistry(1099); 
-	     } catch (RemoteException e) {
-	     }
-		 ServeurRMI chatServeur = new ServeurRMI();
-	     Naming.rebind("//localhost/RmiServer", chatServeur);
-	     System.out.println("Serveur prêt!");
-	 }
+	    } catch (RemoteException e) {
+	    }
+		ServeurRMI chatServeur = new ServeurRMI();
+	    Naming.rebind("//localhost/RmiServer", chatServeur);
+	    System.out.println("Serveur prêt!");
+	}
 
-	@Override
+	/**
+	 * Utilisé par le client pour récupéré le dernier message non lu sur le serveur.
+	 */
 	public String getLastMessage(int lastMessageIndex) throws RemoteException {
 		if(messageList.size() > lastMessageIndex + 1) {
 			return messageList.get(lastMessageIndex + 1);
@@ -35,7 +37,9 @@ public class ServeurRMI extends UnicastRemoteObject implements ServeurIntf{
 		return null;
 	}
 
-	@Override
+	/**
+	 * Utilisé par le client pour envoyer un message.
+	 */
 	public void sendMessage(String message, String pseudo) throws RemoteException {
 		messageList.add(pseudo + " : " + message);
 	}

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class PollingThread extends Thread{
 
 	private ClientRMI chatClient;
-	private int lastMessageIndex = -1;
+	private int lastMessageIndex = -1; // indice du dernier message connu du client
 	
 	
 	public PollingThread(ClientRMI chatClient){
@@ -18,7 +18,6 @@ public class PollingThread extends Thread{
 			try {
 				String serverMessage;
 				serverMessage = chatClient.Serveur.getLastMessage(lastMessageIndex); // Récupération de la liste des messages serveur non lus.
-				
 				if(serverMessage != null) {
 					lastMessageIndex ++;
 					System.out.println(serverMessage);
@@ -30,6 +29,9 @@ public class PollingThread extends Thread{
 		}
 	}
 
+	/**
+	 * Incrémente lastMessageIndex. Utilisé juste après l'écriture d'un message par le client.  
+	 */
 	public void newMessage() {
 		lastMessageIndex ++;
 	}
