@@ -21,6 +21,7 @@ public class ServeurRMI extends UnicastRemoteObject implements ServeurIntf{
 		try { 
 			 LocateRegistry.createRegistry(1099); 
 	    } catch (RemoteException e) {
+	    	e.printStackTrace();
 	    }
 		ServeurRMI chatServeur = new ServeurRMI();
 	    Naming.rebind("//localhost/RmiServer", chatServeur);

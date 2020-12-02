@@ -7,14 +7,14 @@ public class PollingThread extends Thread{
 
 	private ClientRMI chatClient;
 	private int lastMessageIndex = -1; // indice du dernier message connu du client
-	
+	private boolean isStopped = false;
 	
 	public PollingThread(ClientRMI chatClient){
 		this.chatClient = chatClient;
 	}
 		
 	public void run(){
-		while(true) {
+		while(!isStopped) {
 			try {
 				String serverMessage;
 				serverMessage = chatClient.Serveur.getLastMessage(lastMessageIndex); // Récupération de la liste des messages serveur non lus.
@@ -35,6 +35,10 @@ public class PollingThread extends Thread{
 	public void newMessage() {
 		lastMessageIndex ++;
 	}
+	public void setStopped(boolean isStopped) {
+		this.isStopped = isStopped;
+	}
+	
 	
 	
 }

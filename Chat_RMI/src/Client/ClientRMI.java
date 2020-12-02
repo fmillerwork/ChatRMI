@@ -43,7 +43,7 @@ public class ClientRMI {
     			}
             	message = chatClient.sc.nextLine();
             }
-            
+            pt.setStopped(true);
             chatClient.sc.close();
             System.out.println("A quitté le chat.");
         }
