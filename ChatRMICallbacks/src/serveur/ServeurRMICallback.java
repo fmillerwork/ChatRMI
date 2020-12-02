@@ -30,10 +30,7 @@ public class ServeurRMICallback extends UnicastRemoteObject implements ServeurIn
 	    }
 		ServeurRMICallback chatServeur = new ServeurRMICallback();
 		Naming.rebind("//localhost/RmiServer", chatServeur);
-		System.out.println("Serveur prêt!");
-		while(true){
-			
-		}  
+		System.out.println("Serveur prêt!"); 
 	}
 
 	
@@ -41,23 +38,9 @@ public class ServeurRMICallback extends UnicastRemoteObject implements ServeurIn
 	 * Utilisé par le client pour envoyer un message.
 	 */
 	public void sendMessage(ClientIntfCallback sender, String message, String pseudo) throws RemoteException {
-		messageList.add(message);
-		
-		//	Envoi des messages aux clients
-		ArrayList<Integer> clientIDToRemove = new ArrayList<Integer>();
-		for(int i = 0; i < listeClients.size(); i++) {
-			try {
-				if(!sender.equals(listeClients.get(i))) {
-					listeClients.get(i).getLastMessage(message, pseudo);
-				}
-			} catch (RemoteException e) {
-	 			System.out.println("Client deconnecté !");
-	 			clientIDToRemove.add(i);
-			}
-		}
-		for(int i = 0; i < clientIDToRemove.size(); i++) {
-			listeClients.remove((int) clientIDToRemove.get(i));
-		}
+		String newMessage = pseudo + " : " + message;
+		messageList.add(newMessage);
+		sendToClient(sender, newMessage);
 		
 	}
 	
@@ -66,8 +49,36 @@ public class ServeurRMICallback extends UnicastRemoteObject implements ServeurIn
 	 * @throws NotBoundException 
 	 * @throws MalformedURLException 
 	 */
-	public void connect(ClientIntfCallback client) throws RemoteException, MalformedURLException, NotBoundException {
+	public void connect(ClientIntfCallback client) throws RemoteException{
 		listeClients.add(client);
+	}
+
+	/**
+	 * Utilisé par le le client lors de sa deconnexion.
+	 */
+	public void disconnect(ClientIntfCallback client, String pseudo) throws RemoteException {
+		sendToClient(client, pseudo + " s'est déco !");
+		
+	}
+	
+	/**
+	 * Envoi un message à un client passé en paramètre
+	 * @param sender
+	 * @param message
+	 */
+	private void sendToClient(ClientIntfCallback client, String message) {
+			// Envoi des messages aux clients
+		
+			for(int i = 0; i < listeClients.size(); i++) {
+				try {
+					if(!client.equals(listeClients.get(i))) {
+						listeClients.get(i).getLastMessage(message);
+					}
+				} catch (RemoteException e) {
+		 			System.out.println("Client deconnecté !");
+		 			listeClients.remove(i);
+				}
+			}
 	}
 
 

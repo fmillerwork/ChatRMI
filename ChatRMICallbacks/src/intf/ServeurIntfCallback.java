@@ -1,7 +1,5 @@
 package intf;
 
-import java.net.MalformedURLException;
-import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -11,7 +9,9 @@ public interface ServeurIntfCallback extends Remote{
 	
 	public void sendMessage(ClientIntfCallback sender, String message, String pseudo) throws RemoteException;
 	
-	public void connect(ClientIntfCallback client) throws RemoteException, MalformedURLException, NotBoundException;
+	public void connect(ClientIntfCallback client) throws RemoteException;
+	
+	public void disconnect(ClientIntfCallback client, String pseudo) throws RemoteException;
 	
 	
 }
